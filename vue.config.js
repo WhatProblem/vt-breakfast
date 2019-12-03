@@ -1,5 +1,6 @@
 const merge = require('webpack-merge');
 const tsImportPluginFactory = require('ts-import-plugin');
+const path = require('path');
 
 module.exports = {
     // publicPath: './', // hashRoute中可以静态打开
@@ -25,7 +26,8 @@ module.exports = {
 							tsImportPluginFactory({
 								libraryName: 'vant',
 								libraryDirectory: 'es',
-								style: true
+								// style: true,
+								style: name => `${name}/style/less` // 1.定义自定义主题一
 							})
 						]
 					}),
@@ -44,6 +46,17 @@ module.exports = {
             },
             postcss: {
                 // 这里的选项会传递给 postcss-loader
+            },
+            less: {
+                modifyVars: {
+									// 直接覆盖变量
+									// red: '#03a9f4',
+									// blue: '#3eaf7c',
+									// orange: '#f08d49',
+									// 'text-color': '#111333',
+									// 或者可以通过less文件覆盖（文件路径为绝对路径）
+									'hack': `true; @import "${path.join(__dirname, './src/style/vt.less')}";`
+                }
             }
         }
     }
