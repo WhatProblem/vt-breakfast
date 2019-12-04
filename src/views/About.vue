@@ -47,7 +47,7 @@ import { Row, Col, Icon, Cell, CellGroup } from "vant";
 })
 export default class About extends Vue {
   mounted() {
-    console.log(Vue.$axios);
+    console.log(this)
   }
 }
 </script>

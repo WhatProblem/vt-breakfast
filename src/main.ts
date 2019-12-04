@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import "./plugins/axios";
 import store from "./store";
+import "./style/myIcon.css";
 
 Vue.config.productionTip = false;
 
