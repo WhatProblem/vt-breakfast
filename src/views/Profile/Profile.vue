@@ -1,10 +1,6 @@
 <template>
-  <div class="about">
-    <h1 class="test-title text-color util__container">This is an about page</h1>
-    <img
-      class="user-poster"
-      src="https://img.yzcdn.cn/public_files/2017/10/23/8690bb321356070e0b8c4404d087f8fd.png"
-    />
+  <div class="profile">
+    <img class="user-poster" src="https://img.yzcdn.cn/public_files/2017/10/23/8690bb321356070e0b8c4404d087f8fd.png" />
     <van-row class="user-links">
       <van-col span="6">
         <van-icon name="pending-payment" />待付款
@@ -32,11 +28,13 @@
   </div>
 </template>
 <script lang="ts">
+// @ is an alias to /src
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Row, Col, Icon, Cell, CellGroup } from "vant";
+
 @Component({
-  name: "about",
+  name: "profile",
   components: {
     [Row.name]: Row,
     [Col.name]: Col,
@@ -45,14 +43,13 @@ import { Row, Col, Icon, Cell, CellGroup } from "vant";
     [CellGroup.name]: CellGroup
   }
 })
-export default class About extends Vue {
+export default class Profile extends Vue {
   mounted() {
-    console.log(this)
+    console.log(process.env);
   }
 }
 </script>
-
-<style lang="less">
+<style lang="less" scoped>
 body {
   font-size: 16px;
   background-color: #f8f8f8;

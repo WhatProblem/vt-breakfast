@@ -21,6 +21,9 @@ instance.interceptors.request.use(
 /* 响应拦截 */
 instance.interceptors.response.use(
   response => {
+    if (response.status === 200) {
+      return response.data;
+    }
     return response;
   },
   error => {

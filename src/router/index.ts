@@ -1,23 +1,32 @@
 import Vue from "vue";
 import VueRouter, { Route } from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: Home
+    path: "",
+    redirect: "/home"
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/home",
+    name: "home",
+    component: () => import("../views/Home/Home.vue")
+  },
+  {
+    path: "/sort",
+    name: "sort",
+    component: ()=>import("../views/Sort/Sort.vue")
+  },
+  {
+    path: "/cart",
+    name: "cart",
+    component: ()=>import("../views/Cart/Cart.vue")
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: ()=>import("../views/Profile/Profile.vue")
   }
 ];
 
@@ -29,7 +38,7 @@ const router = new VueRouter({
 
 router.beforeEach((to: Route, from: Route, next) => {
   //to and from are Route Object,next() must be called to resolve the hook}
-  console.log("路由守卫");
+  // console.log("路由守卫");
   next();
 });
 
