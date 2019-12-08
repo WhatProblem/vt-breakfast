@@ -1,0 +1,73 @@
+/* 自定义样式变量 */
+@gray-8: #112233;
+@blue: #f0a23b;
+@text-color: @gray-8;
+@red: #e92f66;
+
+/* 自定义主题-可直接使用 */
+@themeColor: #f0a23b;
+
+:root {
+    --main-bg-color: coral;
+    --main-txt-color: blue;
+    --main-padding: 15px;
+}
+
+/* 防止vw影响伪类元素 */
+img {
+    content: normal !important;
+}
+
+span {
+    content: normal !important;
+
+    &::after {
+        content: normal !important;
+    }
+}
+
+.util__container {
+    background: #fff;
+}
+
+.tag__title {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    margin: 16px 0 6px;
+}
+
+.wrap__blank {
+    width: 100%;
+    height: 50px;
+}
+
+.sort__card {
+    margin: 10px 10px;
+    border-radius: 10px;
+    text-align: left;
+
+    .sort__card__title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .sort__card__score {
+        margin-bottom: 10px;
+    }
+
+    .sort__card__price {
+        font-size: 16px;
+        font-weight: bold;
+        color: @red;
+    }
+    .sort__card__num {
+        font-size: 20px;
+        font-weight: bold;
+        color: @red;
+        span {
+            margin-right: 10px;
+        }
+    }
+}

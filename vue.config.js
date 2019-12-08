@@ -1,5 +1,7 @@
 const merge = require('webpack-merge');
 const tsImportPluginFactory = require('ts-import-plugin');
+const autoprefixer = require('autoprefixer');
+const pxtoviewport = require('postcss-px-to-viewport');
 const path = require('path');
 
 module.exports = {
@@ -45,7 +47,13 @@ module.exports = {
                 // 这里的选项会传递给 css-loader
             },
             postcss: {
-                // 这里的选项会传递给 postcss-loader
+							// 这里的选项会传递给 postcss-loader
+							plugins: [
+								autoprefixer(),
+								pxtoviewport({
+									viewportWidth: 375
+								})
+							]
             },
             less: {
                 modifyVars: {

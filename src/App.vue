@@ -14,6 +14,9 @@
 import Vue from "vue";
 import { Tabbar, TabbarItem, Icon } from "vant";
 import Component from "vue-class-component";
+import { Mutation, Getter } from "vuex-class";
+import { getSortList } from "@/http/home";
+import { Watch } from 'vue-property-decorator';
 
 @Component({
   name: "app",
@@ -24,6 +27,8 @@ import Component from "vue-class-component";
   }
 })
 export default class App extends Vue {
+  @Mutation SET_SORTLIST: any;
+
   active: string = "home";
   tabList: Array<object> = [
     {to: {path:"/home"}, name: "home", icon: "icon-home", tabName: "首页"},
@@ -32,8 +37,25 @@ export default class App extends Vue {
     {to: {path:"/profile"}, name: "profile", icon: "icon-profile", tabName: "我"}
   ];
 
+  created () {
+    this.getSort()
+  }
+
   mounted () {
     
+  }
+
+  @Watch('$route')
+  changRoute(to: any, from: any) {
+    this.active = to.name;
+  }
+
+  getSort() {
+    getSortList().then(res => {
+      if (res.code === 200) {
+        this.SET_SORTLIST(res.data);
+      }
+    });
   }
 
   navTo(opt: any) {

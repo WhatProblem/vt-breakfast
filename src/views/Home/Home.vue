@@ -5,7 +5,13 @@
       <van-swipe indicator-color="#1989fa">
         <van-swipe-item v-for="(item, index) in bannerList" :key="index">
           <div class="slider" @click="navToDetail(item)">
-            <img alt v-lazy="item.pic_url" />
+            <!-- <img alt v-lazy="item.pic_url" /> -->
+            <van-image width="100%" height="100%" fit="cover" :show-loading="true" :show-error="true" :src="item.pic_url" :lazy-load="true">
+              <template v-slot:loading>
+                <van-loading type="spinner" size="30" color="#f0a23b" />
+              </template>
+              <template v-slot:error><img src="../../assets/default-pic.png"/></template>
+            </van-image>
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -16,7 +22,12 @@
         <van-grid-item v-for="(item,index) in sortList" :key="index">
           <div class="sort-list">
             <div class="img">
-              <img :src="item.sort_icon" alt />
+              <!-- <img v-lazy="item.sort_icon" alt /> -->
+              <van-image round width="50px" height="50px" fit="cover" :show-loading="true" :src="item.sort_icon" :lazy-load="true">
+                <template v-slot:loading>
+                  <van-loading type="spinner" color="#f0a23b" size="20" />
+                </template>
+              </van-image>
               <div class="sort-title">{{item.sort_name}}</div>
             </div>
           </div>
@@ -25,7 +36,7 @@
     </div>
     <!-- 优惠滑动列表 -->
     <div class="discount">
-      <div class="discount-title">限时折扣</div>
+      <van-divider class="tag__title">限时折扣</van-divider>
       <div class="discount-list">
         <CardPanel
           class="discount-card"
@@ -37,13 +48,15 @@
           :cardTitle="item.goods_name"
           :cardDesc="`￥${item.price}`"
           :picUrl="item.pic_url"
-          :imgStyle="{height: '100%'}"
         />
       </div>
     </div>
+    <div class="advertise">
+      <van-image radius="30px" width="100%" height="100%" fit="cover" src="http://hbimg.b0.upaiyun.com/5d23351564e1cb58f55484374f95890c7d1fa6dbb514-n9uyGg_fw658" />
+    </div>
     <!-- 新品上架 -->
     <div class="news">
-      <div class="news-title">上架新品</div>
+      <van-divider class="tag__title">上架新品</van-divider>
       <van-grid :column-num="2" gutter="10" :border="false">
         <van-grid-item v-for="(item,index) in hotSaleList" :key="index">
           <CardPanel
@@ -54,14 +67,13 @@
             :cardTitle="item.goods_name"
             :cardDesc="`￥${item.price}`"
             :picUrl="item.pic_url"
-            :imgStyle="{width: '100%', height: '100%'}"
           />
         </van-grid-item>
       </van-grid>
     </div>
     <!-- 库存促销 -->
     <div class="sale">
-      <div class="sale-title">推荐促销</div>
+      <van-divider class="tag__title">推荐促销</van-divider>
       <div class="sale-content">
         <CardPanel
           class="sale-card"
@@ -73,12 +85,16 @@
           :cardTitle="item.goods_name"
           :cardDesc="`￥${item.price}`"
           :picUrl="item.pic_url"
-          :imgStyle="{width: '100%'}"
         />
       </div>
     </div>
     <!-- 底部空白区 -->
-    <div class="wrap-blank"></div>
+    <div class="wrap__blank"></div>
+    <van-overlay :show="showCover">
+      <div class="cover">
+        <van-loading type="spinner" color="#f0a23b" />      
+      </div>
+    </van-overlay>
   </div>
 </template>
 <script lang="ts">
@@ -86,7 +102,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import CardPanel from "@/components/CardPanel.vue";
-import { Swipe, SwipeItem, Grid, GridItem, Lazyload, Skeleton } from "vant";
+import { Swipe, SwipeItem, Grid, GridItem, Lazyload, Skeleton, Loading, Overlay, Image, Divider } from "vant";
 import {
   getBannerList,
   getSortList,
@@ -106,6 +122,10 @@ import {
     [Grid.name]: Grid,
     [GridItem.name]: GridItem,
     [Skeleton.name]: Skeleton,
+    [Loading.name]: Loading,
+    [Overlay.name]: Overlay,
+    [Image.name]: Image,
+    [Divider.name]: Divider,
     CardPanel
   }
 })
@@ -115,62 +135,76 @@ export default class Home extends Vue {
   discountList: Array<object> = [];
   hotSaleList: Array<object> = [];
   recommendList: Array<object> = [];
+  showCover: boolean = false; // 遮罩层
 
   mounted() {
     this.init();
   }
 
   init() {
-    this.getBanner();
-    this.getSort();
-		this.getDiscount();
-		this.getHot();
-		this.getRecommend();
+    this.showCover = true;
+    Promise.all([
+    this.getBanner(),
+    this.getSort(),
+		this.getDiscount(),
+		this.getHot(),
+    this.getRecommend()]).then(res=>{
+      this.bannerList = res[0];
+      this.sortList = res[1];
+      this.discountList = res[2];
+      this.hotSaleList = res[3];
+      this.recommendList = res[4];
+      this.showCover = false;
+    })
   }
 
   getBanner() {
-    getBannerList().then(res => {
+    return getBannerList().then(res => {
       if (res.code === 200) {
-        this.bannerList = res.data;
+        return res.data;
       }
+      return [];
     });
   }
 
   getSort() {
-    getSortList().then(res => {
+    return getSortList().then(res => {
       if (res.code === 200) {
-        this.sortList = res.data;
+        return res.data;
       }
+      return [];
     });
   }
 
   getDiscount() {
-    getDiscountList().then(res => {
-      console.log(res);
+    return getDiscountList().then(res => {
       if (res.code === 200) {
-        this.discountList = res.data;
+        return res.data;
       }
+      return [];
     });
   }
 
   getHot() {
-    getHotSale().then(res => {
+    return getHotSale().then(res => {
       if (res.code === 200) {
-        this.hotSaleList = res.data;
+        return res.data;
       }
+      return [];
     });
   }
 
   getRecommend() {
-    getHistory().then(res => {
+    return getHistory().then(res => {
       if (res.code === 200) {
-        this.recommendList = res.data;
+        return res.data;
       }
+      return [];
     });
   }
 
   navToDetail(opt: any) {
-    console.log(opt);
+    this.$router.push({path: "/goodsDetail", query: {item: encodeURI(JSON.stringify(opt))}})
   }
 }
 </script>
@@ -212,16 +246,6 @@ export default class Home extends Vue {
   }
   .discount {
     width: 100%;
-    .discount-title {
-      margin-top: 15px;
-      padding-left: 10px;
-      text-align: left;
-      height: 16px;
-      line-height: 16px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #060606;
-    }
     .discount-list {
       width: 100%;
       height: 170px;
@@ -241,17 +265,15 @@ export default class Home extends Vue {
       }
     }
   }
+  .advertise {
+    width: 100%;
+    height: 90px;
+    padding: 10px 10px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
   .news {
     width: 100%;
-    .news-title {
-      height: 20px;
-      line-height: 20px;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: left;
-      margin-top: 15px;
-      padding-left: 10px;
-    }
     /deep/ .van-grid-item__content {
       // padding-top: 0;
       // padding-bottom: 0;
@@ -260,15 +282,6 @@ export default class Home extends Vue {
   }
   .sale {
     width: 100%;
-    .sale-title {
-      height: 20px;
-      line-height: 20px;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: left;
-      margin-top: 20px;
-      padding-left: 10px;
-    }
     .sale-content {
       width: 100%;
       padding: 0 10px;
@@ -278,9 +291,12 @@ export default class Home extends Vue {
       }
     }
   }
-  .wrap-blank {
-    width: 100%;
-    height: 50px;
+  .cover {
+    position: absolute;
+    margin: auto;
+    top: 30%;
+    left: 0;
+    right: 0;
   }
 }
 </style>

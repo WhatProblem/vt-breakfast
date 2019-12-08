@@ -1,7 +1,13 @@
 <template>
   <div class="card-panel" :style="{width: width}">
     <div class="pic" :style="{height:picHeight}">
-      <img  alt v-lazy="picUrl" :style="imgStyle"/>
+      <!-- <img  alt v-lazy="picUrl" :style="imgStyle"/> -->
+      <van-image width="100%" height="100%" fit="cover" :show-loading="true" :show-error="true" :src="picUrl" :lazy-load="true">
+        <template v-slot:loading>
+          <van-loading type="spinner" size="30" color="#f0a23b" />
+        </template>
+        <!-- <template v-slot:error><img src="../assets/default-pic.png"/></template> -->
+      </van-image>
     </div>
     <div v-if="verticalTitle">
       <div class="card-title">{{cardTitle}}</div>
@@ -23,12 +29,14 @@
 import Vue from "vue";
 import { Prop } from "vue-property-decorator";
 import Component from "vue-class-component";
-import { Icon } from "vant";
+import { Icon,Image, Loading } from "vant";
 
 @Component({
 	name: "cardPanel",
 	components: {
-		[Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Image.name]: Image,
+    [Loading.name]: Loading
 	}
 })
 export default class CardPenl extends Vue {
@@ -65,15 +73,9 @@ export default class CardPenl extends Vue {
   @Prop({
     type: String,
     required: false,
-    default: "../assets/logo.png"
+    default: "../assets/default-pic.png"
   })
   picUrl!: string;
-  @Prop({
-    type: Object,
-    required: true,
-    default: {}
-  })
-  imgStyle!: object;
 
 }
 </script>
@@ -103,6 +105,7 @@ export default class CardPenl extends Vue {
     overflow: hidden;
     background: @themeColor;
     margin-top: 5px;
+    color: #fff;
   }
   .card-desc {
     width: 100%;
