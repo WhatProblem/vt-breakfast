@@ -4,7 +4,8 @@ import axios, {AxiosPromise,AxiosInstance} from "axios";
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_API || "",
   headers: {
-    "Content-Type": "application/json;charset=UTF-8"
+    "Content-Type": "application/json;charset=UTF-8",
+    "authorization": localStorage.getItem("token")||""
   }
 });
 

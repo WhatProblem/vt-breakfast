@@ -91,7 +91,7 @@
     <!-- 底部空白区 -->
     <div class="wrap__blank"></div>
     <van-overlay :show="showCover">
-      <div class="cover">
+      <div class="wrap__cover">
         <van-loading type="spinner" color="#f0a23b" />      
       </div>
     </van-overlay>
@@ -135,7 +135,7 @@ export default class Home extends Vue {
   discountList: Array<object> = [];
   hotSaleList: Array<object> = [];
   recommendList: Array<object> = [];
-  showCover: boolean = false; // 遮罩层
+  showCover: boolean = true; // 遮罩层
 
   mounted() {
     this.init();
@@ -290,13 +290,6 @@ export default class Home extends Vue {
         margin-bottom: 10px;
       }
     }
-  }
-  .cover {
-    position: absolute;
-    margin: auto;
-    top: 30%;
-    left: 0;
-    right: 0;
   }
 }
 </style>

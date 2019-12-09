@@ -2,7 +2,7 @@
   <div id="app">
     <router-view/>
 
-    <van-tabbar v-model="active" :safe-area-inset-bottom="true" @change="navTo">
+    <van-tabbar v-model="active" :safe-area-inset-bottom="true" @change="navTo" v-show="showTab">
       <van-tabbar-item v-for="(item,index) in tabList" :key="index" :to="item.to" :name="item.name">
         <van-icon :class="['iconfont', item.icon, 'tab-icon']" class-prefix="icon" slot="icon"></van-icon>
         <span>{{item.tabName}}</span>
@@ -36,6 +36,7 @@ export default class App extends Vue {
     {to: {path:"/cart"}, name: "cart", icon: "icon-cart", tabName: "购物车"},
     {to: {path:"/profile"}, name: "profile", icon: "icon-profile", tabName: "我"}
   ];
+  showTab: boolean = true;
 
   created () {
     this.getSort()
@@ -48,6 +49,12 @@ export default class App extends Vue {
   @Watch('$route')
   changRoute(to: any, from: any) {
     this.active = to.name;
+    let pathArr = ['/home', '/sort', '/cart', '/profile'];
+    if (pathArr.includes(to.path)) {
+      this.showTab = true;
+    } else {
+      this.showTab = false;
+    }
   }
 
   getSort() {
