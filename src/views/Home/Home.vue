@@ -96,7 +96,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import CardPanel from '@/components/CardPanel.vue'
-
 import { Swipe, SwipeItem, Grid, GridItem, Lazyload, Skeleton, Loading, Overlay, Image, Divider } from 'vant'
 import { getBannerList, getSortList, getDiscountList, addOrDelFav, addOrDelCart, searchFor, getHotSale, getHistory } from '@/http/home'
 
