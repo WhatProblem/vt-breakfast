@@ -79,7 +79,7 @@
 					:cardTitle="item.goods_name"
 					:cardDesc="`￥${item.price}`"
 					:picUrl="item.pic_url"
-				/>
+				></CardPanel>
 			</div>
 		</div>
 		<!-- 底部空白区 -->
