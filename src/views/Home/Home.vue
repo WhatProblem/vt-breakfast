@@ -6,7 +6,15 @@
 				<van-swipe-item v-for="(item, index) in bannerList" :key="index">
 					<div class="slider" @click="navToDetail(item)">
 						<!-- <img alt v-lazy="item.pic_url" /> -->
-						<van-image width="100%" height="100%" fit="cover" :show-loading="true" :show-error="true" :src="item.pic_url" :lazy-load="true">
+						<van-image
+							width="100%"
+							height="100%"
+							fit="cover"
+							:show-loading="true"
+							:show-error="true"
+							:src="item.pic_url"
+							:lazy-load="true"
+						>
 							<template v-slot:loading>
 								<van-loading type="spinner" size="30" color="#f0a23b" />
 							</template>
@@ -25,7 +33,15 @@
 					<div class="sort-list">
 						<div class="img">
 							<!-- <img v-lazy="item.sort_icon" alt /> -->
-							<van-image round width="50px" height="50px" fit="cover" :show-loading="true" :src="item.sort_icon" :lazy-load="true">
+							<van-image
+								round
+								width="50px"
+								height="50px"
+								fit="cover"
+								:show-loading="true"
+								:src="item.sort_icon"
+								:lazy-load="true"
+							>
 								<template v-slot:loading>
 									<van-loading type="spinner" color="#f0a23b" size="20" />
 								</template>
@@ -54,14 +70,28 @@
 			</div>
 		</div>
 		<div class="advertise">
-			<van-image radius="30px" width="100%" height="100%" fit="cover" src="http://hbimg.b0.upaiyun.com/5d23351564e1cb58f55484374f95890c7d1fa6dbb514-n9uyGg_fw658" />
+			<van-image
+				radius="30px"
+				width="100%"
+				height="100%"
+				fit="cover"
+				src="http://hbimg.b0.upaiyun.com/5d23351564e1cb58f55484374f95890c7d1fa6dbb514-n9uyGg_fw658"
+			/>
 		</div>
 		<!-- 新品上架 -->
 		<div class="news">
 			<van-divider class="tag__title">上架新品</van-divider>
 			<van-grid :column-num="2" gutter="10" :border="false">
 				<van-grid-item v-for="(item, index) in hotSaleList" :key="index">
-					<CardPanel class="news-card" width="100%" picHeight="140px" :verticalTitle="true" :cardTitle="item.goods_name" :cardDesc="`￥${item.price}`" :picUrl="item.pic_url" />
+					<CardPanel
+						class="news-card"
+						width="100%"
+						picHeight="140px"
+						:verticalTitle="true"
+						:cardTitle="item.goods_name"
+						:cardDesc="`￥${item.price}`"
+						:picUrl="item.pic_url"
+					/>
 				</van-grid-item>
 			</van-grid>
 		</div>
@@ -97,7 +127,16 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import CardPanel from '@/components/CardPanel.vue'
 import { Swipe, SwipeItem, Grid, GridItem, Lazyload, Skeleton, Loading, Overlay, Image, Divider } from 'vant'
-import { getBannerList, getSortList, getDiscountList, addOrDelFav, addOrDelCart, searchFor, getHotSale, getHistory } from '@/http/home'
+import {
+	getBannerList,
+	getSortList,
+	getDiscountList,
+	addOrDelFav,
+	addOrDelCart,
+	searchFor,
+	getHotSale,
+	getHistory
+} from '@/http/home'
 
 @Component({
 	name: 'home',
@@ -128,14 +167,16 @@ export default class Home extends Vue {
 
 	init() {
 		this.showCover = true
-		Promise.all([this.getBanner(), this.getSort(), this.getDiscount(), this.getHot(), this.getRecommend()]).then(res => {
-			this.bannerList = res[0]
-			this.sortList = res[1]
-			this.discountList = res[2]
-			this.hotSaleList = res[3]
-			this.recommendList = res[4]
-			this.showCover = false
-		})
+		Promise.all([this.getBanner(), this.getSort(), this.getDiscount(), this.getHot(), this.getRecommend()]).then(
+			res => {
+				this.bannerList = res[0]
+				this.sortList = res[1]
+				this.discountList = res[2]
+				this.hotSaleList = res[3]
+				this.recommendList = res[4]
+				this.showCover = false
+			}
+		)
 	}
 
 	getBanner() {
